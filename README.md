@@ -1,3 +1,3 @@
 # vote_app
-Authors: Matthew ritter
+Authors: Matthew Ritter
 App to host poll
