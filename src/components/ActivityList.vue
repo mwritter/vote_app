@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { db } from "@/main";
 import TableItem from "./TableItem";
 export default {
   name: "ActivityList",
@@ -24,27 +25,24 @@ export default {
   },
   data() {
     return {
-      activities: [
-        {
-          id: 1,
-          title: "Board Games",
-          votes: 1
-        },
-        {
-          id: 2,
-          title: "Free Time Friday App",
-          votes: 1
-        },
-        {
-          id: 3,
-          title: "Switch Time!",
-          votes: 1
-        }
-      ]
+      activities: [],
+      polls: [],
+      loading: false
     };
   },
-
+  mounted() {
+    this.getActivities();
+  },
   methods: {
+    async getActivities() {
+      let snapshot = await db.collection("Polls").get();
+      snapshot.forEach(doc => {
+        this.polls.push(doc.data());
+      });
+      this.polls[0].BallotItems.forEach(activity => {
+        this.activities.push(activity);
+      });
+    },
     increase(activity) {
       activity.votes++;
     },

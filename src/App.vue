@@ -15,7 +15,6 @@ body {
   height: 100%;
   width: 100%;
 }
-
 .black-bg {
   background-color: black;
 }

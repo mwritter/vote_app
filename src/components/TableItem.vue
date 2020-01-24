@@ -1,6 +1,6 @@
 <template>
   <div class="table-item">
-    <span id="item-name">{{ activity.title }}</span>
+    <span id="item-name">{{ activity.name }}</span>
     <span id="item-votes">{{ activity.votes }}</span>
     <span id="up" @click="$emit('increase', activity)">
       <svg
