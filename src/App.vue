@@ -1,51 +1,33 @@
 <template>
   <div id="app">
-    <ActivityList />
+    <router-view />
   </div>
 </template>
 
-<script>
-import ActivityList from "./components/ActivityList";
-export default {
-  name: "app",
-  components: {
-    ActivityList
-  },
-  data: () => {
-    return {};
-  }
-};
-</script>
-
 <style>
 * {
-  margin: 0px;
   padding: 0px;
+  margin: 0px;
   box-sizing: border-box;
 }
 html,
 body {
   height: 100%;
   width: 100%;
+}
+
+.black-bg {
   background-color: black;
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 #app {
-  display: grid;
-  justify-content: center;
-  align-content: center;
   height: 100%;
-  width: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
   color: #2c3e50;
-}
-#activity-list {
-  display: grid;
-  grid-gap: 3rem;
-  width: 85vw;
-  max-width: 900px;
-  list-style: none;
 }
 </style>

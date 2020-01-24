@@ -53,7 +53,7 @@ export default {
   border: 1px solid white;
   border-radius: 3rem;
   color: white;
-  font-size: 2em;
+  font-size: 1.5em;
   grid-template-areas:
     "name name votes up"
     "name name votes down";

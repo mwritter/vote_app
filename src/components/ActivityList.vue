@@ -1,6 +1,10 @@
 <template>
   <div id="activity-list">
-    <div v-for="activity in activities" :key="activity.id">
+    <div
+      id="activity-list-container"
+      v-for="activity in activities"
+      :key="activity.id"
+    >
       <TableItem
         @increase="increase"
         @decrease="decrease"
@@ -39,6 +43,7 @@ export default {
       ]
     };
   },
+
   methods: {
     increase(activity) {
       activity.votes++;
@@ -50,4 +55,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#activity-list {
+  display: grid;
+  align-self: start;
+  grid-gap: 3rem;
+  width: 100%;
+  align-content: center;
+  justify-content: center;
+}
+#activity-list-container {
+  width: 95vw;
+  max-width: 900px;
+}
+</style>
