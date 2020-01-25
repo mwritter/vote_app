@@ -12,6 +12,7 @@
         :activity="activity"
       ></TableItem>
     </div>
+    <div class="loading-bar" :class="{ loading: this.loading }"></div>
   </div>
 </template>
 
@@ -26,28 +27,79 @@ export default {
   data() {
     return {
       activities: [],
-      polls: [],
       loading: false
     };
   },
   mounted() {
-    this.getActivities();
+    // this.getActivities();
+  },
+  created() {
+    this.addRealTimeListeners();
+    // this.getActivities();
   },
   methods: {
     async getActivities() {
-      let snapshot = await db.collection("Polls").get();
+      let snapshot = await db.collection("ActivitiesPoll").get();
       snapshot.forEach(doc => {
-        this.polls.push(doc.data());
-      });
-      this.polls[0].BallotItems.forEach(activity => {
-        this.activities.push(activity);
+        let appData = doc.data();
+        appData.id = doc.id;
+        this.activities.push(appData);
       });
     },
-    increase(activity) {
-      activity.votes++;
+    async addRealTimeListeners() {
+      const self = this;
+      db.collection("ActivitiesPoll").onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          const source = change.doc.metadata.hasPendingWrites
+            ? "Local"
+            : "Server";
+          switch (change.type) {
+            case "modified":
+              for (let activity of self.activities) {
+                if (activity.id == change.doc.id) {
+                  activity.name = change.doc.data().name;
+                  activity.votes = change.doc.data().votes;
+                }
+              }
+              break;
+            case "added":
+              if (source === "Server") {
+                self.activities.push({
+                  id: change.doc.id,
+                  name: change.doc.data().name,
+                  votes: change.doc.data().votes
+                });
+              }
+              break;
+          }
+        });
+      });
     },
-    decrease(activity) {
-      activity.votes -= activity.votes > 0 ? 1 : 0;
+    async increase(activity) {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      await db
+        .collection("ActivitiesPoll")
+        .doc(activity.id)
+        .update({
+          votes: activity.votes + 1
+        });
+      this.loading = false;
+    },
+    async decrease(activity) {
+      if (this.loading || activity.votes == 0) {
+        return;
+      }
+      this.loading = true;
+      await db
+        .collection("ActivitiesPoll")
+        .doc(activity.id)
+        .update({
+          votes: activity.votes - 1
+        });
+      this.loading = false;
     }
   }
 };
@@ -65,5 +117,14 @@ export default {
 #activity-list-container {
   width: 95vw;
   max-width: 900px;
+}
+.loading-bar {
+  height: 1px;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+}
+.loading {
+  background-color: green;
 }
 </style>

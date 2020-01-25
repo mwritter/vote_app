@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <h1 class="header">FreeTimeFriday</h1>
     <div class="app-list">
       <router-link to="/vote_app">
         <h1>Vote App</h1>
@@ -19,6 +18,8 @@ export default {
 <style>
 .app-list {
   display: grid;
+  justify-content: center;
+  margin-top: 2rem;
 }
 .home {
   display: grid;

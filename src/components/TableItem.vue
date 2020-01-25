@@ -50,7 +50,7 @@ export default {
   align-content: center;
   grid-template-columns: repeat(4, 1fr);
   height: 5em;
-  border: 1px solid white;
+  border: 2px solid white;
   border-radius: 3rem;
   color: white;
   font-size: 1.5em;

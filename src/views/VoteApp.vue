@@ -1,10 +1,6 @@
 <template>
   <div id="vote-app">
-    <div id="nav">
-      <router-link to="/">
-        <h1>HOME</h1>
-      </router-link>
-    </div>
+    <div id="nav"></div>
     <activity-list></activity-list>
   </div>
 </template>
