@@ -10,11 +10,7 @@
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path
-          d="M49.75 25.75L25.25 1.25L0.749999 25.75"
-          stroke="white"
-          stroke-width="10%"
-        />
+        <path d="M49.75 25.75L25.25 1.25L0.749999 25.75" stroke-width="10%" />
       </svg>
     </span>
     <span id="down" @click="$emit('decrease', activity)">
@@ -25,11 +21,7 @@
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path
-          d="M50 1L25.5 25.5L0.999999 1"
-          stroke="white"
-          stroke-width="10%"
-        />
+        <path d="M50 1L25.5 25.5L0.999999 1" stroke-width="10%" />
       </svg>
     </span>
   </div>
@@ -50,9 +42,9 @@ export default {
   align-content: center;
   grid-template-columns: repeat(4, 1fr);
   height: 5em;
-  border: 2px solid white;
+  border: 2px solid black;
   border-radius: 3rem;
-  color: white;
+  color: black;
   font-size: 1.5em;
   grid-template-areas:
     "name name votes up"
@@ -73,6 +65,8 @@ export default {
   padding-left: 20px;
   padding-right: 20px;
   grid-area: up;
+  stroke: black;
+
   align-self: center;
   justify-self: center;
 }
@@ -84,6 +78,7 @@ export default {
   padding-left: 20px;
   padding-right: 20px;
   grid-area: down;
+  stroke: black;
   align-self: center;
   justify-self: center;
 }

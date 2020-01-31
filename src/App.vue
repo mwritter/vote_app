@@ -1,17 +1,8 @@
 <template>
   <div id="app">
-    <v-app-bar
-      class="app-bar"
-      color="#000000"
-      dark
-      elevate-on-scroll
-      scroll-target="#scrolling-techniques-7"
-    >
-      <router-link to="/">
-        <v-icon class="action-icon">mdi-home</v-icon>
-      </router-link>
-      FreeTime<strong>Friday</strong></v-app-bar
-    >
+    <v-app-bar class="app-bar" color="#000000" dark>
+      <router-link to="/"> FreeTime<strong>Friday</strong> </router-link>
+    </v-app-bar>
     <router-view />
   </div>
 </template>

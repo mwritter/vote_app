@@ -1,5 +1,7 @@
 <template>
   <div id="activity-list">
+    <v-text-field v-model="newActivity" label="New Activity"></v-text-field>
+    <v-btn @click="addActivity()">Submit</v-btn>
     <div
       id="activity-list-container"
       v-for="activity in activities"
@@ -27,15 +29,12 @@ export default {
   data() {
     return {
       activities: [],
-      loading: false
+      loading: false,
+      newActivity: ""
     };
-  },
-  mounted() {
-    // this.getActivities();
   },
   created() {
     this.addRealTimeListeners();
-    // this.getActivities();
   },
   methods: {
     async getActivities() {
@@ -75,6 +74,14 @@ export default {
         });
       });
     },
+    async addActivity() {
+      const newActivity = {
+        name: this.newActivity,
+        votes: 0
+      };
+      await db.collection("ActivitiesPoll").add(newActivity);
+      console.log("document added ?");
+    },
     async increase(activity) {
       if (this.loading) {
         return;
@@ -108,6 +115,7 @@ export default {
 <style>
 #activity-list {
   display: grid;
+  margin-top: 50px;
   align-self: start;
   grid-gap: 3rem;
   width: 100%;

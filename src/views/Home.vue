@@ -26,7 +26,6 @@ export default {
 }
 .header {
   justify-self: start;
-  background-color: lightblue;
   width: 100%;
 }
 </style>

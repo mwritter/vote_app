@@ -18,7 +18,6 @@ export default {
 <style>
 #vote-app {
   display: grid;
-  background-color: black;
   height: 100%;
   width: 100%;
 }
