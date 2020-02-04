@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <v-app-bar class="app-bar" color="#000000" dark>
-      <router-link to="/"> FreeTime<strong>Friday</strong> </router-link>
-    </v-app-bar>
+    <router-link to="/"> 
+      <div id="home-banner">
+      FreeTime<strong>Friday</strong>
+      </div>
+    </router-link>
     <router-view />
   </div>
 </template>
@@ -13,21 +15,30 @@
   margin: 0px;
   box-sizing: border-box;
 }
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
 a {
   text-decoration: none;
   color: inherit;
 }
+
+html,body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+#home-banner{
+  position: fixed;
+  background: rgba(99, 99, 99, 0.527);
+  color: white;
+  font-size: 1.2em;
+  padding: 1rem;
+  border-radius: 0px 0px 20px;
+}
 #app {
-  height: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  height: 100%;
 }
 .action-icon {
   margin-right: 20px;

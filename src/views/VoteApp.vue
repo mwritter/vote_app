@@ -1,6 +1,5 @@
 <template>
   <div id="vote-app">
-    <div id="nav"></div>
     <activity-list></activity-list>
   </div>
 </template>
@@ -17,8 +16,7 @@ export default {
 
 <style>
 #vote-app {
-  display: grid;
+  background: #B3C0EF;
   height: 100%;
-  width: 100%;
 }
 </style>

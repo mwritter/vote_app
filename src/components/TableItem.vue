@@ -4,8 +4,8 @@
     <span id="item-votes">{{ activity.votes }}</span>
     <span id="up" @click="$emit('increase', activity)">
       <svg
-        width="39"
-        height="15"
+        width="34"
+        height="10"
         viewBox="0 0 51 27"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -15,8 +15,8 @@
     </span>
     <span id="down" @click="$emit('decrease', activity)">
       <svg
-        width="39"
-        height="15"
+        width="34"
+        height="10"
         viewBox="0 0 51 27"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -42,14 +42,16 @@ export default {
   align-content: center;
   grid-template-columns: repeat(4, 1fr);
   height: 5em;
-  border: 2px solid black;
-  border-radius: 3rem;
-  color: black;
+  background: #B3C0EF;
+  color: rgb(85, 110, 192);
+  box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
   font-size: 1.5em;
+  border-radius: 10px;
   grid-template-areas:
     "name name votes up"
     "name name votes down";
 }
+
 #item-name {
   grid-area: name;
   align-self: center;
@@ -61,28 +63,38 @@ export default {
   justify-self: end;
 }
 #up {
+  display: flex;
   cursor: pointer;
-  padding-left: 20px;
-  padding-right: 20px;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
   grid-area: up;
-  stroke: black;
-
+  stroke: rgb(137, 158, 230);
+  justify-content: center;
+  align-items: center;
   align-self: center;
   justify-self: center;
+  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
 }
 #up:hover path {
-  stroke: green;
+  stroke: rgba(26, 128, 0, 0.4);
 }
 #down {
+  margin-top: 15px;
+  display: flex;
   cursor: pointer;
-  padding-left: 20px;
-  padding-right: 20px;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
   grid-area: down;
-  stroke: black;
+  stroke: rgb(137, 158, 230);
+  justify-content: center;
+  align-items: center;
   align-self: center;
   justify-self: center;
+  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
 }
 #down:hover path {
-  stroke: red;
+  stroke: rgba(153, 1, 1, 0.4);
 }
 </style>

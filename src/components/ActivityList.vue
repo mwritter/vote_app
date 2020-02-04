@@ -1,7 +1,9 @@
 <template>
   <div id="activity-list">
-    <v-text-field v-model="newActivity" label="New Activity"></v-text-field>
-    <v-btn @click="addActivity()">Submit</v-btn>
+   <div class="new_activity_card">
+      <input @keyup.enter="addActivity()" class="input" v-model="newActivity" placeholder="New Activity"/>
+    <!-- <v-btn class="btn" @click="addActivity()">Submit</v-btn> -->
+   </div>
     <div
       id="activity-list-container"
       v-for="activity in activities"
@@ -13,6 +15,12 @@
         class="activity-item"
         :activity="activity"
       ></TableItem>
+      <p class="delete-activity" @click="deleteActivity(activity.id)" >delete</p>
+    </div>
+    <div v-if="hasError">
+      <span class="error" v-for="(error, index) in db_errors" :key="index">
+        {{ error }} {{ getEmoji('oops') }}
+      </span>
     </div>
     <div class="loading-bar" :class="{ loading: this.loading }"></div>
   </div>
@@ -30,28 +38,23 @@ export default {
     return {
       activities: [],
       loading: false,
-      newActivity: ""
+      newActivity: "",
+      hasError: false,
+      db_errors: [],
+      emoji: {
+        oops: [],
+        yay: []
+      }
     };
   },
   created() {
     this.addRealTimeListeners();
   },
   methods: {
-    async getActivities() {
-      let snapshot = await db.collection("ActivitiesPoll").get();
-      snapshot.forEach(doc => {
-        let appData = doc.data();
-        appData.id = doc.id;
-        this.activities.push(appData);
-      });
-    },
     async addRealTimeListeners() {
       const self = this;
       db.collection("ActivitiesPoll").onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
-          const source = change.doc.metadata.hasPendingWrites
-            ? "Local"
-            : "Server";
           switch (change.type) {
             case "modified":
               for (let activity of self.activities) {
@@ -61,26 +64,45 @@ export default {
                 }
               }
               break;
+            case "removed":
+              self.activities = 
+                self.activities.filter((activity) => {
+                  return activity.id != change.doc.id;
+                });
+              break;
             case "added":
-              if (source === "Server") {
                 self.activities.push({
                   id: change.doc.id,
                   name: change.doc.data().name,
                   votes: change.doc.data().votes
                 });
-              }
               break;
           }
         });
       });
     },
     async addActivity() {
+      if (!this.newActivity.trim().length > 0){
+        return;
+      }
       const newActivity = {
         name: this.newActivity,
         votes: 0
       };
-      await db.collection("ActivitiesPoll").add(newActivity);
-      console.log("document added ?");
+      await db.collection("ActivitiesPoll")
+        .add(newActivity)
+        .catch(error => {
+          this.db_errors.push(error)
+        });
+      this.newActivity = "";
+    },
+    async deleteActivity(docID){
+      await db.collection("ActivitiesPoll")
+        .doc(docID)
+        .delete()
+        .catch((error) => {
+          this.db_error = error;
+        });
     },
     async increase(activity) {
       if (this.loading) {
@@ -92,6 +114,9 @@ export default {
         .doc(activity.id)
         .update({
           votes: activity.votes + 1
+        })
+        .catch(error => {
+          this.db_errors.push(error)
         });
       this.loading = false;
     },
@@ -107,6 +132,11 @@ export default {
           votes: activity.votes - 1
         });
       this.loading = false;
+    },
+    getEmoji(type){
+      return type === 'oops'
+        ? this.emoji.oops[0]
+        : this.emoji.yay[0];
     }
   }
 };
@@ -115,14 +145,13 @@ export default {
 <style>
 #activity-list {
   display: grid;
-  margin-top: 50px;
-  align-self: start;
   grid-gap: 3rem;
-  width: 100%;
-  align-content: center;
   justify-content: center;
+  align-content: start;
+  height: 100%;
 }
 #activity-list-container {
+  justify-self: start;
   width: 95vw;
   max-width: 900px;
 }
@@ -134,5 +163,22 @@ export default {
 }
 .loading {
   background-color: green;
+}
+.new_activity_card{
+  margin-top: 5rem;
+  color: rgb(85, 110, 192);
+  box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 95vw;
+  max-width: 900px;
+}
+.delete-activity {
+  margin-top: 5px;
+  color: rgba(179, 40, 40, 0.4);
+  cursor: pointer;
+}
+.error {
+  color:rgb(179, 40, 40);
 }
 </style>
