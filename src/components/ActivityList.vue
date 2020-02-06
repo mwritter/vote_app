@@ -2,28 +2,29 @@
   <div id="activity-list">
    <div class="new_activity_card">
       <input @keyup.enter="addActivity()" class="input" v-model="newActivity" placeholder="New Activity"/>
-    <!-- <v-btn class="btn" @click="addActivity()">Submit</v-btn> -->
+   <div class="submit" @click="addActivity()">
+      submit  
+      </div>
    </div>
-    <div
-      id="activity-list-container"
-      v-for="activity in activities"
-      :key="activity.id"
-    >
-      <TableItem
-        @increase="increase"
-        @decrease="decrease"
-        class="activity-item"
-        :activity="activity"
-      ></TableItem>
-      <p class="delete-activity" @click="deleteActivity(activity.id)" >delete</p>
+   
+   <transition-group tag="div" name="fade-in" class="activity-item">
+        <TableItem 
+        v-for="activity in activities"
+        :key="activity.id"
+          @increase="increase"
+          @decrease="decrease"
+          @delete="deleteActivity"
+          :activity="activity"
+        ></TableItem>
+        </transition-group>
+      <div v-if="hasError">
+        <span class="error" v-for="(error, index) in db_errors" :key="index">
+          {{ error }} {{ getEmoji('oops') }}
+        </span>
+      </div>
+      <div class="loading-bar" :class="{ loading: this.loading }"></div>
     </div>
-    <div v-if="hasError">
-      <span class="error" v-for="(error, index) in db_errors" :key="index">
-        {{ error }} {{ getEmoji('oops') }}
-      </span>
-    </div>
-    <div class="loading-bar" :class="{ loading: this.loading }"></div>
-  </div>
+
 </template>
 
 <script>
@@ -145,14 +146,14 @@ export default {
 <style>
 #activity-list {
   display: grid;
-  grid-gap: 3rem;
-  justify-content: center;
+  margin: 0 auto;
+  grid-gap: 2rem;
   align-content: start;
-  height: 100%;
+  max-width: 900px;
+  height: 100vh;
 }
 #activity-list-container {
-  justify-self: start;
-  width: 95vw;
+  margin-left: 10px; 
   max-width: 900px;
 }
 .loading-bar {
@@ -165,20 +166,54 @@ export default {
   background-color: green;
 }
 .new_activity_card{
+  display: flex;
   margin-top: 5rem;
   color: rgb(85, 110, 192);
   box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
   border-radius: 10px;
-  padding: 1.5rem;
-  width: 95vw;
+  padding: 1.2rem;
+  font-size: 1.2em;
+}
+
+.new_activity_card input:focus{
+  outline: none;
+}
+.new_activity_card input{
+  width: 75vw;
   max-width: 900px;
 }
-.delete-activity {
-  margin-top: 5px;
-  color: rgba(179, 40, 40, 0.4);
+.submit{
+  padding: 0.6rem;
   cursor: pointer;
+  color: rgb(85, 110, 192);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
+  justify-self: start;
 }
+
 .error {
   color:rgb(179, 40, 40);
+}
+.fade-in-enter-active {
+  transition: all .3s ease;
+}
+.fade-in-leave-active {
+  transition: all .3s ease;
+}
+.fade-in-enter, .fade-in-leave-to{
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+@media only screen and (max-width: 500px) {
+  /* For mobile phones: */
+
+}
+
+@media only screen and (min-width: 500px) {
+  .submit{
+    display: none;
+  }
+
 }
 </style>

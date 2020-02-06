@@ -1,5 +1,6 @@
 <template>
-  <div class="table-item">
+<div>
+   <div class="table-item">
     <span id="item-name">{{ activity.name }}</span>
     <span id="item-votes">{{ activity.votes }}</span>
     <span id="up" @click="$emit('increase', activity)">
@@ -25,6 +26,9 @@
       </svg>
     </span>
   </div>
+    <p class="delete-activity" @click="$emit('delete',activity.id)" >delete</p>
+</div>
+ 
 </template>
 
 <script>
@@ -39,17 +43,19 @@ export default {
 <style>
 .table-item {
   display: grid;
+  overflow: hidden;
   align-content: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   height: 5em;
   background: #B3C0EF;
   color: rgb(85, 110, 192);
   box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
   font-size: 1.5em;
+  padding: 1rem;
   border-radius: 10px;
   grid-template-areas:
-    "name name votes up"
-    "name name votes down";
+    "name name name votes up "
+    "name name name votes down";
 }
 
 #item-name {
@@ -60,7 +66,7 @@ export default {
 #item-votes {
   grid-area: votes;
   align-self: center;
-  justify-self: end;
+  justify-self: center;
 }
 #up {
   display: flex;
@@ -96,5 +102,14 @@ export default {
 }
 #down:hover path {
   stroke: rgba(153, 1, 1, 0.4);
+}
+.delete-activity {
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  color: rgba(179, 40, 40, 0.4);
+  cursor: pointer;
+}
+@media only screen and (max-width: 500px) {
+  /* For mobile phones: */
 }
 </style>
