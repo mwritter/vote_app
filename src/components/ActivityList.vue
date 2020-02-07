@@ -1,10 +1,9 @@
 <template>
   <div id="activity-list">
-   <div class="new_activity_card">
-      <input @keyup.enter="addActivity()" class="input" v-model="newActivity" placeholder="New Activity"/>
-   <div class="submit" @click="addActivity()">
-      submit  
-      </div>
+   <div class="new_activity_card" @click="focusOnText()">
+     <form autocomplete="off" @submit.prevent="addActivity()">
+        <input  id="new-activity-input" v-model="newActivity" placeholder="New Activity"/>
+     </form>
    </div>
    
    <transition-group tag="div" name="fade-in" class="activity-item">
@@ -15,6 +14,7 @@
           @decrease="decrease"
           @delete="deleteActivity"
           :activity="activity"
+          :loading="loading"
         ></TableItem>
         </transition-group>
       <div v-if="hasError">
@@ -119,7 +119,7 @@ export default {
         .catch(error => {
           this.db_errors.push(error)
         });
-      this.loading = false;
+        this.loading = false;
     },
     async decrease(activity) {
       if (this.loading || activity.votes == 0) {
@@ -138,7 +138,10 @@ export default {
       return type === 'oops'
         ? this.emoji.oops[0]
         : this.emoji.yay[0];
-    }
+    },
+    focusOnText(){
+      document.getElementById('new-activity-input').focus();
+    },
   }
 };
 </script>
@@ -152,6 +155,7 @@ export default {
   max-width: 900px;
   height: 100vh;
 }
+
 #activity-list-container {
   margin-left: 10px; 
   max-width: 900px;
@@ -201,12 +205,15 @@ export default {
   transition: all .3s ease;
 }
 .fade-in-enter, .fade-in-leave-to{
-  transform: translateX(10px);
   opacity: 0;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 800px) {
   /* For mobile phones: */
+  #activity-list{
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 
 }
 

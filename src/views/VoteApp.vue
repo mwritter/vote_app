@@ -18,6 +18,6 @@ export default {
 #vote-app {
   background: #B3C0EF;
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
 }
 </style>

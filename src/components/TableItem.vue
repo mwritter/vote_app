@@ -1,9 +1,10 @@
 <template>
 <div>
    <div class="table-item">
-    <span id="item-name">{{ activity.name }}</span>
+    <button class="delete-activity small-btn" :class="{pressed: deleteClicked}" @click="deleteActivity(activity)" >x</button>
+    <span  id="item-name">{{ activity.name }}</span>
     <span id="item-votes">{{ activity.votes }}</span>
-    <span id="up" @click="$emit('increase', activity)">
+    <span id="up" :class="{pressed: increaseClicked}" class="small-btn" @click="increase(activity)">
       <svg
         width="34"
         height="10"
@@ -14,7 +15,7 @@
         <path d="M49.75 25.75L25.25 1.25L0.749999 25.75" stroke-width="10%" />
       </svg>
     </span>
-    <span id="down" @click="$emit('decrease', activity)">
+    <span id="down" :class="{pressed: decreaseClicked}" class="small-btn" @click="decrease(activity)">
       <svg
         width="34"
         height="10"
@@ -26,7 +27,6 @@
       </svg>
     </span>
   </div>
-    <p class="delete-activity" @click="$emit('delete',activity.id)" >delete</p>
 </div>
  
 </template>
@@ -35,7 +35,47 @@
 export default {
   name: "TableItem",
   props: {
-    activity: Object
+    activity: Object,
+    loading: Boolean
+  },
+  data: () => {
+    return {
+      increaseClicked: false,
+      decreaseClicked: false,
+      deleteClicked: false
+    }
+  },
+  methods: {
+    increase(activity){
+      this.increaseClicked = true;
+      setTimeout(() => {
+        this.increaseClicked = false;
+      }, 500);
+      if(this.loading){
+        return;
+      }
+      this.$emit('increase', activity);
+    },
+    decrease(activity){
+      this.decreaseClicked = true;
+      setTimeout(() => {
+        this.decreaseClicked = false;
+      }, 500);
+      if(this.loading){
+        return;
+      }
+      this.$emit('decrease', activity);
+    },
+    deleteActivity(activity){
+      if(this.loading){
+        return;
+      }
+      this.deleteClicked = true;
+      setTimeout(() => {
+        this.deleteClicked = false;
+        this.$emit('delete',activity.id);
+      }, 500);
+    }
   }
 };
 </script>
@@ -45,7 +85,8 @@ export default {
   display: grid;
   overflow: hidden;
   align-content: center;
-  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(6, 1fr);
   height: 5em;
   background: #B3C0EF;
   color: rgb(85, 110, 192);
@@ -54,14 +95,14 @@ export default {
   padding: 1rem;
   border-radius: 10px;
   grid-template-areas:
-    "name name name votes up "
-    "name name name votes down";
+    "delete name name name votes up "
+    "delete name name name votes down";
 }
 
 #item-name {
   grid-area: name;
   align-self: center;
-  justify-self: center;
+  justify-self: start;
 }
 #item-votes {
   grid-area: votes;
@@ -71,16 +112,12 @@ export default {
 #up {
   display: flex;
   cursor: pointer;
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
   grid-area: up;
   stroke: rgb(137, 158, 230);
   justify-content: center;
   align-items: center;
   align-self: center;
   justify-self: center;
-  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
 }
 #up:hover path {
   stroke: rgba(26, 128, 0, 0.4);
@@ -89,27 +126,49 @@ export default {
   margin-top: 15px;
   display: flex;
   cursor: pointer;
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
   grid-area: down;
   stroke: rgb(137, 158, 230);
   justify-content: center;
   align-items: center;
   align-self: center;
   justify-self: center;
-  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
 }
 #down:hover path {
   stroke: rgba(153, 1, 1, 0.4);
 }
 .delete-activity {
-  margin-bottom: 2rem;
-  margin-top: 1rem;
-  color: rgba(179, 40, 40, 0.4);
-  cursor: pointer;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+
+  grid-area: delete;
+  color: rgb(137, 158, 230);
+}
+.delete-activity:hover {
+  color: rgba(153, 1, 1, 0.4);
+}
+.small-btn{
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
 }
 @media only screen and (max-width: 500px) {
   /* For mobile phones: */
+}
+.pressed {
+  -webkit-animation: pressed 200ms ease infinite alternate;
+  -moz-animation: pressed 200ms ease infinite alternate;
+  animation: pressed 200ms ease infinite alternate;
+}
+
+@-webkit-keyframes pressed {
+  from {
+    box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
+  }
+  
+  to {
+    box-shadow: 1px 1px 1px rgb(137, 158, 230), -1px -1px 1px    rgba(255,255,255, 0.3);
+  }
 }
 </style>
