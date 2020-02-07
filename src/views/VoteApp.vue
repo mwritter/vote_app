@@ -16,7 +16,10 @@ export default {
 
 <style>
 #vote-app {
-  background: #B3C0EF;
+  display: grid;
+  justify-content: center;
+  grid-template-rows: repeat(2, 1fr);
+  background: rgb(98, 118, 180);
   height: 100vh;
   overflow: auto;
 }

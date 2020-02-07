@@ -1,7 +1,7 @@
 <template>
 <div>
    <div class="table-item">
-    <button class="delete-activity small-btn" :class="{pressed: deleteClicked}" @click="deleteActivity(activity)" >x</button>
+    <button class="delete-activity small-btn" :class="{pressed: deleteClicked}" @click="deleteActivity(activity)" >-</button>
     <span  id="item-name">{{ activity.name }}</span>
     <span id="item-votes">{{ activity.votes }}</span>
     <span id="up" :class="{pressed: increaseClicked}" class="small-btn" @click="increase(activity)">
@@ -88,9 +88,9 @@ export default {
   margin-bottom: 2rem;
   grid-template-columns: repeat(6, 1fr);
   height: 5em;
-  background: #B3C0EF;
-  color: rgb(85, 110, 192);
-  box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
+  background: rgb(98, 118, 180);
+  color: rgb(182, 190, 216);
+  box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03), -9px -9px 9px    rgba(255, 255, 255, 0.03);
   font-size: 1.5em;
   padding: 1rem;
   border-radius: 10px;
@@ -113,21 +113,21 @@ export default {
   display: flex;
   cursor: pointer;
   grid-area: up;
-  stroke: rgb(137, 158, 230);
+  stroke: rgb(182, 190, 216);;
   justify-content: center;
   align-items: center;
   align-self: center;
   justify-self: center;
 }
 #up:hover path {
-  stroke: rgba(26, 128, 0, 0.4);
+  stroke: rgba(65, 224, 25, 0.4);
 }
 #down {
   margin-top: 15px;
   display: flex;
   cursor: pointer;
   grid-area: down;
-  stroke: rgb(137, 158, 230);
+  stroke: rgb(182, 190, 216);;
   justify-content: center;
   align-items: center;
   align-self: center;
@@ -151,24 +151,28 @@ export default {
   border-radius: 50%;
   height: 35px;
   width: 35px;
-  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
+  box-shadow: 8px 8px 8px rgb(0, 0, 0, 0.08), -8px -8px 8px    rgba(255, 255, 255, 0.03);
+
 }
 @media only screen and (max-width: 500px) {
   /* For mobile phones: */
 }
 .pressed {
-  -webkit-animation: pressed 200ms ease infinite alternate;
-  -moz-animation: pressed 200ms ease infinite alternate;
-  animation: pressed 200ms ease infinite alternate;
+  -webkit-animation: pressed 200ms ease-in-out alternate;
+  -moz-animation: pressed 200ms ease-in-out alternate;
+  animation: pressed 200ms ease-in-out alternate;
 }
 
 @-webkit-keyframes pressed {
-  from {
-    box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
+  0% {
+    box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.08), -5px -5px 5px    rgba(255, 255, 255, 0.03);
   }
   
-  to {
-    box-shadow: 1px 1px 1px rgb(137, 158, 230), -1px -1px 1px    rgba(255,255,255, 0.3);
+  50% {
+    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0, 0.3), 1px 1px 1px    rgba(255, 255, 255, 0.03);
+  }
+  100% {
+    box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.08), -5px -5px 5px    rgba(255, 255, 255, 0.03);
   }
 }
 </style>

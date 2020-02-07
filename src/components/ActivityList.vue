@@ -149,11 +149,14 @@ export default {
 <style>
 #activity-list {
   display: grid;
-  margin: 0 auto;
+  margin-top: 5rem;
+  border-radius: 2rem;
+  padding: 3rem;
   grid-gap: 2rem;
   align-content: start;
+  width: 100vw;
   max-width: 900px;
-  height: 100vh;
+  box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03), -9px -9px 9px    rgba(255, 255, 255, 0.03);
 }
 
 #activity-list-container {
@@ -171,9 +174,9 @@ export default {
 }
 .new_activity_card{
   display: flex;
-  margin-top: 5rem;
-  color: rgb(85, 110, 192);
-  box-shadow: 9px 9px 9px rgb(137, 158, 230), -9px -9px 9px    rgba(255,255,255, 0.3);
+  margin-top: 3rem;
+  color: rgb(209, 216, 241);
+  box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03), -9px -9px 9px    rgba(255, 255, 255, 0.03);
   border-radius: 10px;
   padding: 1.2rem;
   font-size: 1.2em;
@@ -183,16 +186,11 @@ export default {
   outline: none;
 }
 .new_activity_card input{
-  width: 75vw;
   max-width: 900px;
 }
-.submit{
-  padding: 0.6rem;
-  cursor: pointer;
-  color: rgb(85, 110, 192);
-  border-radius: 10px;
-  box-shadow: 5px 5px 5px rgb(137, 158, 230), -5px -5px 5px    rgba(255,255,255, 0.3);
-  justify-self: start;
+
+.new_activity_card input::placeholder{
+  color: rgb(219, 227, 255);
 }
 
 .error {
@@ -213,6 +211,8 @@ export default {
   #activity-list{
     margin-left: 1rem;
     margin-right: 1rem;
+    padding: 0;
+    box-shadow: 0px 0px 0px;
   }
 
 }
