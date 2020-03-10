@@ -17,9 +17,10 @@ export default {
 <style>
 #vote-app {
   display: grid;
+  grid-gap: 1rem;
   justify-content: center;
   grid-template-rows: repeat(2, 1fr);
-  background: rgb(98, 118, 180);
+  background: rgb(255, 255, 255);
   height: 100vh;
   overflow: auto;
 }

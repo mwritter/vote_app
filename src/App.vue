@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <router-link to="/"> 
-      <div id="home-banner">
-      FreeTime<strong>Friday</strong>
-      </div>
+    <router-link to="/">
+      <div id="home-banner">FreeTime<strong>Friday</strong></div>
     </router-link>
     <router-view />
   </div>
@@ -20,12 +18,13 @@ a {
   color: inherit;
 }
 
-html,body {
+html,
+body {
   padding: 0;
   margin: 0;
   height: 100vh;
 }
-#home-banner{
+#home-banner {
   position: fixed;
   background: rgba(99, 99, 99, 0.527);
   color: white;
@@ -39,6 +38,17 @@ html,body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   height: 100%;
+}
+#app-message {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  color: rgb(0, 0, 0);
+  background-color: rgba(68, 68, 68, 0.2);
+  border-radius: 25px;
+  padding: 1rem;
 }
 .action-icon {
   margin-right: 20px;

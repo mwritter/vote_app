@@ -1,30 +1,38 @@
 <template>
   <div id="activity-list">
-   <div class="new_activity_card" @click="focusOnText()">
-     <form autocomplete="off" @submit.prevent="addActivity()">
-        <input  id="new-activity-input" v-model="newActivity" placeholder="New Activity"/>
-     </form>
-   </div>
-   
-   <transition-group tag="div" name="fade-in" class="activity-item">
-        <TableItem 
-        v-for="activity in activities"
-        :key="activity.id"
-          @increase="increase"
-          @decrease="decrease"
-          @delete="deleteActivity"
-          :activity="activity"
-          :loading="loading"
-        ></TableItem>
-        </transition-group>
-      <div v-if="hasError">
-        <span class="error" v-for="(error, index) in db_errors" :key="index">
-          {{ error }} {{ getEmoji('oops') }}
-        </span>
-      </div>
-      <div class="loading-bar" :class="{ loading: this.loading }"></div>
+    <div class="new_activity_card" @click="focusOnText()">
+      <form autocomplete="off" @submit.prevent="addActivity()">
+        <input
+          id="new-activity-input"
+          v-model="newActivity"
+          placeholder="Add New Activity"
+        />
+      </form>
     </div>
 
+    <transition-group tag="div" name="fade-in" class="activity-item">
+      <TableItem
+        v-for="activity in activities"
+        :key="activity.id"
+        @increase="increase"
+        @decrease="decrease"
+        @delete="deleteActivity"
+        :activity="activity"
+        :loading="loading"
+      ></TableItem>
+    </transition-group>
+    <div v-if="hasError">
+      <span class="error" v-for="(error, index) in db_errors" :key="index">
+        {{ error }} {{ getEmoji("oops") }}
+      </span>
+    </div>
+    <div class="loading-bar" :class="{ loading: this.loading }"></div>
+    <transition name="fade-in">
+      <div v-if="message.length > 0" id="app-message">
+        {{ message }}
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -42,9 +50,10 @@ export default {
       newActivity: "",
       hasError: false,
       db_errors: [],
+      message: "",
       emoji: {
-        oops: [],
-        yay: []
+        oops: ["💩"],
+        yay: ["😄", "🚀", "😸", "🥓", "🎊", "👾", "🥇"]
       }
     };
   },
@@ -66,44 +75,47 @@ export default {
               }
               break;
             case "removed":
-              self.activities = 
-                self.activities.filter((activity) => {
-                  return activity.id != change.doc.id;
-                });
+              self.activities = self.activities.filter(activity => {
+                return activity.id != change.doc.id;
+              });
               break;
             case "added":
-                self.activities.push({
-                  id: change.doc.id,
-                  name: change.doc.data().name,
-                  votes: change.doc.data().votes
-                });
+              self.activities.push({
+                id: change.doc.id,
+                name: change.doc.data().name,
+                votes: change.doc.data().votes
+              });
               break;
           }
         });
       });
     },
     async addActivity() {
-      if (!this.newActivity.trim().length > 0){
+      if (!this.newActivity.trim().length > 0) {
         return;
       }
       const newActivity = {
         name: this.newActivity,
         votes: 0
       };
-      await db.collection("ActivitiesPoll")
+      await db
+        .collection("ActivitiesPoll")
         .add(newActivity)
         .catch(error => {
-          this.db_errors.push(error)
+          this.db_errors.push(error);
         });
+      this.showSuccessMessage("added");
       this.newActivity = "";
     },
-    async deleteActivity(docID){
-      await db.collection("ActivitiesPoll")
+    async deleteActivity(docID) {
+      await db
+        .collection("ActivitiesPoll")
         .doc(docID)
         .delete()
-        .catch((error) => {
+        .catch(error => {
           this.db_error = error;
         });
+      this.showSuccessMessage("deleted");
     },
     async increase(activity) {
       if (this.loading) {
@@ -117,9 +129,9 @@ export default {
           votes: activity.votes + 1
         })
         .catch(error => {
-          this.db_errors.push(error)
+          this.db_errors.push(error);
         });
-        this.loading = false;
+      this.loading = false;
     },
     async decrease(activity) {
       if (this.loading || activity.votes == 0) {
@@ -134,14 +146,26 @@ export default {
         });
       this.loading = false;
     },
-    getEmoji(type){
-      return type === 'oops'
-        ? this.emoji.oops[0]
-        : this.emoji.yay[0];
+    showSuccessMessage(type) {
+      this.message = `${this.getEmoji("yay")} Successfully ${type} activity!`;
+      this.removeMessage();
     },
-    focusOnText(){
-      document.getElementById('new-activity-input').focus();
+    removeMessage(after = 2000) {
+      setTimeout(() => {
+        this.message = "";
+      }, after);
     },
+    showErrorMessage() {
+      this.message = `Oh ${this.getEmoji("oops")} something went wrong!`;
+      this.removeMessage();
+    },
+    getEmoji(type) {
+      const index = Math.floor(Math.random() * this.emoji[type].length);
+      return type === "oops" ? this.emoji.oops[index] : this.emoji.yay[index];
+    },
+    focusOnText() {
+      document.getElementById("new-activity-input").focus();
+    }
   }
 };
 </script>
@@ -156,11 +180,12 @@ export default {
   align-content: start;
   width: 100vw;
   max-width: 900px;
-  box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03), -9px -9px 9px    rgba(255, 255, 255, 0.03);
+  box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03),
+    -9px -9px 9px rgba(218, 218, 218, 0.274);
 }
 
 #activity-list-container {
-  margin-left: 10px; 
+  margin-left: 10px;
   max-width: 900px;
 }
 .loading-bar {
@@ -172,55 +197,55 @@ export default {
 .loading {
   background-color: green;
 }
-.new_activity_card{
+.new_activity_card {
   display: flex;
   margin-top: 3rem;
-  color: rgb(209, 216, 241);
-  box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03), -9px -9px 9px    rgba(255, 255, 255, 0.03);
+  color: rgb(56, 56, 56);
+  box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03),
+    -9px -9px 9px rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   padding: 1.2rem;
   font-size: 1.2em;
 }
 
-.new_activity_card input:focus{
+.new_activity_card input:focus {
   outline: none;
 }
-.new_activity_card input{
+.new_activity_card input {
   max-width: 900px;
 }
 
-.new_activity_card input::placeholder{
-  color: rgb(219, 227, 255);
+.new_activity_card input::placeholder {
+  color: rgb(56, 56, 56);
 }
 
 .error {
-  color:rgb(179, 40, 40);
+  color: rgb(179, 40, 40);
 }
 .fade-in-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .fade-in-leave-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
-.fade-in-enter, .fade-in-leave-to{
+.fade-in-enter,
+.fade-in-leave-to {
   opacity: 0;
 }
 
 @media only screen and (max-width: 800px) {
   /* For mobile phones: */
-  #activity-list{
+  #activity-list {
     margin-left: 1rem;
     margin-right: 1rem;
     padding: 0;
     box-shadow: 0px 0px 0px;
   }
-
 }
 
 @media only screen and (min-width: 500px) {
-  .submit{
+  .submit {
     display: none;
   }
-
 }
 </style>
