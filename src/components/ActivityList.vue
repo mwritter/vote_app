@@ -1,32 +1,44 @@
 <template>
-  <div id="activity-list">
-    <div class="new_activity_card" @click="focusOnText()">
-      <form autocomplete="off" @submit.prevent="addActivity()">
-        <input
-          id="new-activity-input"
-          v-model="newActivity"
-          placeholder="Add New Activity"
-        />
-      </form>
-    </div>
+  <div>
+    <div id="activity-list">
+      <div class="new_activity_card" @click="focusOnText()">
+        <form autocomplete="off" @submit.prevent="addActivity()">
+          <input
+            id="new-activity-input"
+            v-model="newActivity"
+            placeholder="Add New Activity"
+          />
+        </form>
+      </div>
 
-    <transition-group tag="div" name="fade-in" class="activity-item">
-      <TableItem
-        v-for="activity in activities"
-        :key="activity.id"
-        @increase="increase"
-        @decrease="decrease"
-        @delete="deleteActivity"
-        :activity="activity"
-        :loading="loading"
-      ></TableItem>
-    </transition-group>
-    <div v-if="hasError">
-      <span class="error" v-for="(error, index) in db_errors" :key="index">
-        {{ error }} {{ getEmoji("oops") }}
-      </span>
+      <div id="no-itmes" v-if="activities.length == 0">
+        <p>No activites to show. Try adding some.</p>
+      </div>
+
+      <div v-else>
+        <transition-group
+          mode="in-out"
+          tag="div"
+          name="fade-in"
+          class="activity-item"
+        >
+          <TableItem
+            v-for="activity in activities"
+            :key="activity.id"
+            @increase="increase"
+            @decrease="decrease"
+            @delete="deleteActivity"
+            :activity="activity"
+            :loading="loading"
+          ></TableItem>
+        </transition-group>
+      </div>
+      <div v-if="hasError">
+        <span class="error" v-for="(error, index) in db_errors" :key="index">
+          {{ error }} {{ getEmoji("oops") }}
+        </span>
+      </div>
     </div>
-    <div class="loading-bar" :class="{ loading: this.loading }"></div>
     <transition name="fade-in">
       <div v-if="message.length > 0" id="app-message">
         {{ message }}
