@@ -160,7 +160,7 @@ export default {
   align-self: center;
   justify-content: center;
   grid-area: delete;
-  color: rgb(137, 158, 230);
+  color: rgb(56, 56, 56);
 }
 .delete-activity:hover {
   color: rgba(153, 1, 1, 0.4);

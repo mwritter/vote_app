@@ -12,7 +12,7 @@
       </div>
 
       <div id="no-itmes" v-if="activities.length == 0">
-        <p>No activites to show. Try adding some.</p>
+        <p>We dont have any activites yet, why dont you try adding some 🙂</p>
       </div>
 
       <div v-else>
@@ -193,7 +193,7 @@ export default {
   width: 100vw;
   max-width: 900px;
   box-shadow: 9px 9px 9px rgb(0, 0, 0, 0.03),
-    -9px -9px 9px rgba(218, 218, 218, 0.274);
+    -9px -9px 9px rgba(236, 236, 236, 0.096);
 }
 
 #activity-list-container {
@@ -208,6 +208,10 @@ export default {
 }
 .loading {
   background-color: green;
+}
+#no-itmes {
+  justify-self: center;
+  align-self: center;
 }
 .new_activity_card {
   display: flex;
